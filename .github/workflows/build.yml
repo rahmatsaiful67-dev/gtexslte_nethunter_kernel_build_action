@@ -15,7 +15,7 @@ jobs:
         uses: dabao1955/kernel_build_action@main
         with:
           # 1. SUMBER KERNEL (PRIORITASKAN Vagr9K)
-          kernel-url: 'https://github.com/Vagr9K/kernel_samsung_gtexslte'
+          kernel-url: 'https://github.com/jedld/kernel_samsung_gtexslte'
           kernel-branch: 'master'
           
           # 2. CETAK BIRU PERANGKAT (File konfigurasi)
@@ -27,7 +27,7 @@ jobs:
           # 4. PERALATAN PERAKITAN (Toolchain)
           aosp-gcc: true
           # *** PERBAIKAN DI SINI: UBAH DARI '7.1' MENJADI '7.0' ***
-          android-version: '6.0'
+          android-version: '7.1'
           
           # 5. FITUR KHUSUS (Patch NetHunter & Kemasan)
           anykernel3: true

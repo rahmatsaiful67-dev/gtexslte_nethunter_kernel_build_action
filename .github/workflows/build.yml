@@ -14,7 +14,7 @@ jobs:
       - name: Mulai Meracik Kernel
         uses: dabao1955/kernel_build_action@main
         with:
-          kernel-url: 'https://github.com/Vagr9K/kernel_samsung_gtexslte'
+          kernel-url: 'https://github.com/jedld/kernel_samsung_gtexslte'
           kernel-branch: 'master'
           config: 'gtexslte_defconfig'
           arch: 'arm'

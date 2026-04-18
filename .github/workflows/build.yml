@@ -1,30 +1,38 @@
-# A simple action usage
-name: Build Kernel
+name: Racik Kernel NetHunter untuk SM-T285 (gtexslte) - /e/OS
+
 on:
   workflow_dispatch:
 
 jobs:
-  Build-Kernel:
-    strategy:
-      fail-fast: false
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-
+  build-kernel:
+    name: Proses Perakitan Kernel
+    runs-on: ubuntu-22.04
     steps:
-      - name: Build Kernel
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Mulai Meracik Kernel
         uses: dabao1955/kernel_build_action@main
         with:
-          kernel-url: https://github.com/AcmeUI-Devices/android_kernel_xiaomi_cas
-          kernel-dir: msm-4.19
-          kernel-branch: taffy
-          config: cas_defconfig
-          arch: arm64
+          # 1. SUMBER KERNEL (PRIORITASKAN Vagr9K)
+          kernel-url: 'https://github.com/Vagr9K/kernel_samsung_gtexslte'
+          kernel-branch: 'master'
+          
+          # 2. CETAK BIRU PERANGKAT (File konfigurasi)
+          config: 'gtexslte_defconfig'
+          
+          # 3. ARSITEKTUR PROSESOR (32-bit)
+          arch: 'arm'
+          
+          # 4. PERALATAN PERAKITAN (Toolchain)
           aosp-gcc: true
-          aosp-clang: true
-          ksu: true
-          ksu-version: main
-          android-version: 12
-          aosp-clang-version: r383902
-          disable-lto: true
+          android-version: '7.1'
+          
+          # 5. FITUR KHUSUS (Patch NetHunter & Kemasan)
           anykernel3: true
+          nethunter: true
+          nethunter-patch: true
+          
+          # 6. PENYELESAIAN (Buat halaman unduh)
+          release: true
+          access-token: ${{ secrets.GITHUB_TOKEN }}

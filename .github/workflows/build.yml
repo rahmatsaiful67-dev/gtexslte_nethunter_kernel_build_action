@@ -27,7 +27,7 @@ jobs:
           # 4. PERALATAN PERAKITAN (Toolchain)
           aosp-gcc: true
           # *** PERBAIKAN DI SINI: UBAH DARI '7.1' MENJADI '7.0' ***
-          android-version: '7.0'
+          android-version: '6.0'
           
           # 5. FITUR KHUSUS (Patch NetHunter & Kemasan)
           anykernel3: true

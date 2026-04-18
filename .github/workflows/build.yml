@@ -14,25 +14,16 @@ jobs:
       - name: Mulai Meracik Kernel
         uses: dabao1955/kernel_build_action@main
         with:
-          # 1. SUMBER KERNEL (PRIORITASKAN Vagr9K)
           kernel-url: 'https://github.com/Vagr9K/kernel_samsung_gtexslte'
           kernel-branch: 'master'
-          
-          # 2. CETAK BIRU PERANGKAT (File konfigurasi)
           config: 'gtexslte_defconfig'
-          
-          # 3. ARSITEKTUR PROSESOR (32-bit)
           arch: 'arm'
-          
-          # 4. PERALATAN PERAKITAN (Toolchain) - INI YANG BERUBAH
           aosp-gcc: true
-          # android-version: '7.1' <-- BARIS INI DIHAPUS ATAU DIKOMENTARI
-          
-          # 5. FITUR KHUSUS (Patch NetHunter & Kemasan)
+          android-version: '7.1'
           anykernel3: true
           nethunter: true
           nethunter-patch: false
-          
-          # 6. PENYELESAIAN (Buat halaman unduh)
+          # *** BARIS INI DITAMBAHKAN ***
+          extra-cmd: 'zImage'
           release: true
           access-token: ${{ secrets.GITHUB_TOKEN }}

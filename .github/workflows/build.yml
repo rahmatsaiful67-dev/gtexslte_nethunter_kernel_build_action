@@ -19,7 +19,7 @@ jobs:
           config: 'gtexslte_defconfig'
           arch: 'arm'
           aosp-gcc: true
-          android-version: '7.1'
+          android-version:
           anykernel3: true
           nethunter: true
           nethunter-patch: false

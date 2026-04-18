@@ -31,7 +31,7 @@ jobs:
           # 5. FITUR KHUSUS (Patch NetHunter & Kemasan)
           anykernel3: true
           nethunter: true
-          nethunter-patch: true
+          nethunter-patch: false
           
           # 6. PENYELESAIAN (Buat halaman unduh)
           release: true

@@ -18,7 +18,7 @@ jobs:
         uses: dabao1955/kernel_build_action@main
         with:
           # 1. SUMBER KERNEL
-          kernel-url: 'https://github.com/Vagr9K/kernel_samsung_gtexslte'
+          kernel-url: 'https://github.com/jedld/kernel_samsung_gtexslte'
           kernel-branch: 'master'
           
           # 2. CETAK BIRU PERANGKAT

@@ -3,10 +3,13 @@ name: Racik Kernel NetHunter untuk SM-T285 (gtexslte) - /e/OS
 on:
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   build-kernel:
     name: Proses Perakitan Kernel
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -14,16 +17,28 @@ jobs:
       - name: Mulai Meracik Kernel
         uses: dabao1955/kernel_build_action@main
         with:
-          kernel-url: 'https://github.com/jedld/kernel_samsung_gtexslte'
+          # 1. SUMBER KERNEL
+          kernel-url: 'https://github.com/Vagr9K/kernel_samsung_gtexslte'
           kernel-branch: 'master'
+          
+          # 2. CETAK BIRU PERANGKAT
           config: 'gtexslte_defconfig'
+          
+          # 3. ARSITEKTUR PROSESOR (32-bit)
           arch: 'arm'
+          
+          # 4. PERALATAN PERAKITAN (Toolchain)
           aosp-gcc: true
-          android-version:
+          android-version: '7.0'
+          
+          # 5. FITUR KHUSUS (Patch NetHunter & Kemasan)
           anykernel3: true
           nethunter: true
-          nethunter-patch: false
-          # *** BARIS INI DITAMBAHKAN ***
-          extra-cmd: 'zImage'
+          nethunter-patch: true
+          
+          # 6. PERINTAH EKSTRA (INILAH KUNCI PERBAIKANNYA)
+          extra-make-args: '["zImage"]'
+          
+          # 7. PENYELESAIAN (Buat halaman unduh)
           release: true
           access-token: ${{ secrets.GITHUB_TOKEN }}

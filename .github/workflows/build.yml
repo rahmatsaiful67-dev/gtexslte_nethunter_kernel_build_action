@@ -18,7 +18,7 @@ jobs:
         uses: dabao1955/kernel_build_action@main
         with:
           # 1. SUMBER KERNEL
-          kernel-url: 'https://github.com/jedld/kernel_samsung_gtexslte'
+          kernel-url: 'https://github.com/Vagr9K/kernel_samsung_gtexslte'
           kernel-branch: 'master'
           
           # 2. CETAK BIRU PERANGKAT
@@ -29,9 +29,12 @@ jobs:
           
           # 4. PERALATAN PERAKITAN (Toolchain Kustom GCC 4.9)
           aosp-gcc: false
+          # Toolchain 32-bit
           other-gcc32-url: 'https://github.com/LineageOS/android_prebuilts_gcc_linux-x86_arm_arm-linux-androideabi-4.9'
-          # *** KOREKSI DI SINI: Menggunakan branch yang benar ***
           other-gcc32-branch: 'cm-14.1'
+          # Toolchain 64-bit (wajib disertakan agar builder tidak error)
+          other-gcc64-url: 'https://github.com/LineageOS/android_prebuilts_gcc_linux-x86_aarch64_aarch64-linux-android-4.9'
+          other-gcc64-branch: 'cm-14.1'
           
           # 5. FITUR KHUSUS (Patch NetHunter & Kemasan)
           anykernel3: true

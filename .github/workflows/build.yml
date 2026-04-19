@@ -29,10 +29,8 @@ jobs:
           
           # 4. PERALATAN PERAKITAN (Toolchain Kustom GCC 4.9)
           aosp-gcc: false
-          # Toolchain 32-bit
           other-gcc32-url: 'https://github.com/LineageOS/android_prebuilts_gcc_linux-x86_arm_arm-linux-androideabi-4.9'
           other-gcc32-branch: 'cm-14.1'
-          # Toolchain 64-bit (wajib disertakan agar builder tidak error)
           other-gcc64-url: 'https://github.com/LineageOS/android_prebuilts_gcc_linux-x86_aarch64_aarch64-linux-android-4.9'
           other-gcc64-branch: 'cm-14.1'
           
@@ -41,8 +39,8 @@ jobs:
           nethunter: true
           nethunter-patch: false
           
-          # 6. PERINTAH EKSTRA (Target zImage)
-          extra-make-args: '["zImage"]'
+          # 6. PERINTAH EKSTRA (Abaikan warning, single thread)
+          extra-make-args: '["zImage", "CFLAGS=-Wno-error", "-j1"]'
           
           # 7. PENYELESAIAN (Buat halaman unduh)
           release: true

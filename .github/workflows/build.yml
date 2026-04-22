@@ -16,7 +16,7 @@ jobs:
         with:
           kernel-url: 'https://github.com/Vagr9K/kernel_samsung_gtexslte'
           kernel-branch: 'master'
-          config: 'gtexslte_defconfig'
+          config: 'arch/arm/configs/gtexslte_defconfig'
           arch: 'arm'                       # WAJIB 32-bit
           aosp-gcc: true
           android-version:            # Untuk toolchain yang tepat

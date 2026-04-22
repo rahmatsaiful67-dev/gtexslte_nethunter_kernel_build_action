@@ -19,7 +19,7 @@ jobs:
           config: 'gtexslte_defconfig'
           arch: 'arm'                       # WAJIB 32-bit
           aosp-gcc: true
-          android-version: '7.0'            # Untuk toolchain yang tepat
+          android-version:            # Untuk toolchain yang tepat
           anykernel3: true
           nethunter: true                   # Aktifkan fitur NetHunter
           nethunter-patch: false            # Hindari konflik patch

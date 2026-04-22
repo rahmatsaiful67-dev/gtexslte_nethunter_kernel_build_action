@@ -18,7 +18,6 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y gcc-arm-linux-gnueabihf g++-arm-linux-gnueabihf
-          sudo apt-get install -y gcc-arm-linux-androideabi g++-arm-linux-androideabi
 
       - name: Build
         uses: dabao1955/kernel_build_action@main

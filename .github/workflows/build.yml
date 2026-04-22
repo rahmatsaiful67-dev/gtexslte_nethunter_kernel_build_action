@@ -1,31 +1,27 @@
-name: SM-T285 Pro Kernel Build - dabao1955 Edition
+name: Racik Kernel NetHunter untuk SM-T285 (gtexslte) - /e/OS
 
 on:
-  workflow_dispatch: # Memicu build secara manual dari tab Actions di GitHub
+  workflow_dispatch:
+
+permissions:
+  contents: write
 
 jobs:
   build-kernel:
-    name: Build Kernel for gtexslte
-    runs-on: ubuntu-22.04 # Rekomendasi resmi dari pembuat action
+    name: Build Kernel
+    runs-on: ubuntu-22.04
     steps:
-      - name: Build Kernel with dabao1955 Action
-        uses: dabao1955/kernel_build_action@main # Menggunakan versi terbaru dari action
+      - name: Build
+        uses: dabao1955/kernel_build_action@main
         with:
-          # --- KONFIGURASI INTI (WAJIB & SPESIFIK UNTUK GTEXSLTE) ---
-          kernel-url: https://github.com/jedld/kernel_samsung_gtexslte
-          kernel-branch: master
-          config: gtexslte_defconfig
-          arch: arm # Arsitektur 32-bit untuk chipset Spreadtrum SC8830i
-
-          # --- KOMPILATOR (TOOLCHAIN) ---
-          aosp-gcc: true # Menggunakan GCC 4.9 standar Android, paling stabil untuk kernel lama
-
-          # --- TARGET ANDROID ---
-          android-version: 7 # Target Android 7 (Nougat), sesuai dengan /e/OS Anda
-
-          # --- OPSI TAMBAHAN UNTUK OPTIMASI (SANGAT DIANJURKAN) ---
-          anykernel3: true # Mengemas kernel menjadi file .zip siap flash lewat TWRP
-          release: true # Mengunggah hasil build ke halaman "Releases" di repo GitHub Anda
-
-          # --- TOKEN RAHASIA (WAJIB UNTUK FITUR RELEASE) ---
+          kernel-url: 'https://github.com/Vagr9K/kernel_samsung_gtexslte'
+          kernel-branch: 'master'
+          config: 'gtexslte_defconfig'
+          arch: 'arm'                       # WAJIB 32-bit
+          aosp-gcc: true
+          android-version: '7.0'            # Untuk toolchain yang tepat
+          anykernel3: true
+          nethunter: true                   # Aktifkan fitur NetHunter
+          nethunter-patch: false            # Hindari konflik patch
+          release: true
           access-token: ${{ secrets.GITHUB_TOKEN }}

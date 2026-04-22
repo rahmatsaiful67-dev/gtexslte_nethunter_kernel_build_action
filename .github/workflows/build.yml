@@ -17,16 +17,14 @@ jobs:
           kernel-url: 'https://github.com/jedld/kernel_samsung_gtexslte'
           kernel-branch: 'master'
           config: '/gtexslte_defconfig'
+          CROSS_COMPILE: arm-linux-androideabi-
+          CROSS_COMPILE_ARM32: arm-linux-androideabi-
+          CLANG_TRIPLE: arm-linux-gnueabihf-
           arch: 'arm'                       # WAJIB 32-bit
           aosp-gcc: true
           android-version:            # Untuk toolchain yang tepat
           anykernel3: true
           nethunter: true                   # Aktifkan fitur NetHunter
-          nethunter-patch: true        # Hindari konflik patch
-          
-          CROSS_COMPILE: arm-linux-androideabi-
-          CROSS_COMPILE_ARM32: arm-linux-androideabi-
-          CLANG_TRIPLE: arm-linux-gnueabihf-
-                    
+          nethunter-patch: true        # Hindari konflik patch                    
           release: true
           access-token: ${{ secrets.GITHUB_TOKEN }}

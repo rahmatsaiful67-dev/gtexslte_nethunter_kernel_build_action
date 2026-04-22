@@ -22,6 +22,11 @@ jobs:
           android-version:            # Untuk toolchain yang tepat
           anykernel3: true
           nethunter: true                   # Aktifkan fitur NetHunter
-          nethunter-patch: false            # Hindari konflik patch
+          nethunter-patch: true        # Hindari konflik patch
+          
+          CROSS_COMPILE: arm-linux-androideabi-
+          CROSS_COMPILE_ARM32: arm-linux-androideabi-
+          CLANG_TRIPLE: arm-linux-gnueabihf-
+                    
           release: true
           access-token: ${{ secrets.GITHUB_TOKEN }}

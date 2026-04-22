@@ -1,56 +1,31 @@
-name: SM-T285 Stable Kernel Build
+name: SM-T285 Pro Kernel Build - dabao1955 Edition
 
 on:
-  workflow_dispatch:
-
-env:
-  TZ: Asia/Jakarta
-  DEFCONFIG: gtexslte_defconfig
-  ANYKERNEL_REPO: https://github.com/osm0sis/AnyKernel3.git
+  workflow_dispatch: # Memicu build secara manual dari tab Actions di GitHub
 
 jobs:
-  build:
-    runs-on: ubuntu-20.04
+  build-kernel:
+    name: Build Kernel for gtexslte
+    runs-on: ubuntu-22.04 # Rekomendasi resmi dari pembuat action
     steps:
-      - name: Checkout Kernel Source
-        uses: actions/checkout@v3
-
-      - name: Setup Environment
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y build-essential bc bison flex libssl-dev libncurses5-dev zip
-          echo "BUILD_TIME=$(date +'%Y%m%d_%H%M')" >> $GITHUB_ENV
-
-      - name: Fetch Toolchain
-        run: |
-          git clone https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/arm/arm-eabi-4.8 --depth=1 toolchain
-
-      - name: Verify Defconfig
-        run: |
-          echo "Daftar defconfig yang tersedia:"
-          ls arch/arm/configs/ | grep defconfig || echo "TIDAK ADA DEFCONFIG DITEMUKAN!"
-
-      - name: Compile Kernel
-        run: |
-          export ARCH=arm
-          export CROSS_COMPILE=$(pwd)/toolchain/bin/arm-eabi-
-          export KBUILD_BUILD_USER="MasterClass-Builder"
-          export KBUILD_BUILD_HOST="Excellent-Totalitas"
-          
-          make clean && make mrproper
-          make $DEFCONFIG
-          make -j$(nproc --all) zImage
-
-      - name: Prepare AnyKernel3
-        run: |
-          git clone $ANYKERNEL_REPO AnyKernel3
-          cp arch/arm/boot/zImage AnyKernel3/
-          # Konfigurasi sederhana untuk gtexslte
-          sed -i 's/device.name1=.*/device.name1=gtexslte/' AnyKernel3/anykernel.sh
-          cd AnyKernel3 && zip -r9 ../Kernel-SM-T285-${{ env.BUILD_TIME }}.zip *
-
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v3
+      - name: Build Kernel with dabao1955 Action
+        uses: dabao1955/kernel_build_action@main # Menggunakan versi terbaru dari action
         with:
-          name: Kernel-SM-T285-Final
-          path: Kernel-SM-T285-*.zip
+          # --- KONFIGURASI INTI (WAJIB & SPESIFIK UNTUK GTEXSLTE) ---
+          kernel-url: https://github.com/jedld/kernel_samsung_gtexslte
+          kernel-branch: master
+          config: gtexslte_defconfig
+          arch: arm # Arsitektur 32-bit untuk chipset Spreadtrum SC8830i
+
+          # --- KOMPILATOR (TOOLCHAIN) ---
+          aosp-gcc: true # Menggunakan GCC 4.9 standar Android, paling stabil untuk kernel lama
+
+          # --- TARGET ANDROID ---
+          android-version: 7 # Target Android 7 (Nougat), sesuai dengan /e/OS Anda
+
+          # --- OPSI TAMBAHAN UNTUK OPTIMASI (SANGAT DIANJURKAN) ---
+          anykernel3: true # Mengemas kernel menjadi file .zip siap flash lewat TWRP
+          release: true # Mengunggah hasil build ke halaman "Releases" di repo GitHub Anda
+
+          # --- TOKEN RAHASIA (WAJIB UNTUK FITUR RELEASE) ---
+          access-token: ${{ secrets.GITHUB_TOKEN }}

@@ -1,40 +1,67 @@
-name: Racik Kernel NetHunter untuk SM-T285 (gtexslte) - /e/OS
+name: SM-T285 Pro Kernel Build - Final Edition
 
 on:
   workflow_dispatch:
+  push:
+    branches: [ "master", "main" ]
 
-permissions:
-  contents: write
+env:
+  TZ: Asia/Jakarta
+  DEVICE: gtexslte
+  DEFCONFIG: gtexslte_defconfig  # <-- Koreksi Utama
+  ANYKERNEL_REPO: https://github.com/osm0sis/AnyKernel3.git
 
 jobs:
-  build-kernel:
-    name: Proses Perakitan Kernel
-    runs-on: ubuntu-22.04
+  kernel-build:
+    runs-on: ubuntu-20.04
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - name: Checkout Kernel Source
+        uses: actions/checkout@v3
 
-      - name: Mulai Meracik Kernel
-        uses: dabao1955/kernel_build_action@main
+      - name: Setup Environment & Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential bc bison flex libssl-dev libncurses5-dev zip
+          echo "BUILD_TIME=$(date +'%Y%m%d_%H%M')" >> $GITHUB_ENV
+
+      - name: Fetch Android Toolchains (GCC 4.9)
+        run: |
+          git clone https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9 --depth=1 toolchain
+
+      - name: Verify Defconfig Existence
+        run: |
+          echo "Memeriksa file defconfig yang tersedia..."
+          ls -la arch/arm/configs/ | grep defconfig || echo "TIDAK ADA DEFCONFIG DITEMUKAN!"
+          echo "Pastikan file gtexslte_defconfig ada di direktori tersebut."
+
+      - name: Compiling Kernel
+        run: |
+          export ARCH=arm
+          export KBUILD_BUILD_USER="MasterClass-Builder"
+          export KBUILD_BUILD_HOST="Excellent-Totalitas"
+          export PATH=$(pwd)/toolchain/bin:$PATH
+          export CROSS_COMPILE=arm-linux-androideabi-
+          
+          # Bersihkan dulu sebelum compile
+          make clean && make mrproper
+          make $DEFCONFIG
+          make -j$(nproc --all) zImage
+
+      - name: Prepare AnyKernel3 Flashable ZIP
+        run: |
+          git clone $ANYKERNEL_REPO AnyKernel3
+          cp arch/arm/boot/zImage AnyKernel3/
+          
+          # Konfigurasi AnyKernel3 untuk gtexslte
+          sed -i 's/device.name1=.*/device.name1=gtexslte/' AnyKernel3/anykernel.sh
+          
+          cd AnyKernel3 && zip -r9 ../Kernel-SM-T285-${{ env.BUILD_TIME }}.zip *
+
+      - name: Upload Flashable Kernel Artifact
+        uses: actions/upload-artifact@v3
         with:
-          # 1. SUMBER KERNEL
-          kernel-url: 'https://github.com/jedld/kernel_samsung_gtexslte'
-          kernel-branch: 'master'
-          
-          # 2. CETAK BIRU PERANGKAT
-          config: 'gtexslte_defconfig'
-          
-          # 3. ARSITEKTUR PROSESOR (32-bit)
-          arch: 'arm'
-          
-          # 4. PERALATAN PERAKITAN (Toolchain Kustom GCC 4.9)
-          aosp-gcc: false
-          other-gcc32-url: 'https://github.com/LineageOS/android_prebuilts_gcc_linux-x86_arm_arm-linux-androideabi-4.9'
-          other-gcc32-branch: 'cm-14.1'
-          other-gcc64-url: 'https://github.com/LineageOS/android_prebuilts_gcc_linux-x86_aarch64_aarch64-linux-android-4.9'
-          other-gcc64-branch: 'cm-14.1'
-          
-          # 5. FITUR KHUSUS
+          name: Kernel-SM-T285-Final
+          path: Kernel-SM-T285-*.zip          # 5. FITUR KHUSUS
           anykernel3: true
           nethunter: true
           nethunter-patch: false

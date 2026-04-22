@@ -25,10 +25,11 @@ jobs:
           CROSS_COMPILE: arm-linux-gnueabihf-
           ARCH: arm
           TARGET_KERNEL_CONFIG: gtexslte_defconfig
+          VERBOSE: 1
         with:
           kernel-url: 'https://github.com/jedld/kernel_samsung_gtexslte'
           kernel-branch: 'master'
-          config: '/gtexslte_defconfig'
+          config: 'gtexslte_defconfig'  # Fixed: removed leading /
           arch: 'arm'
           aosp-gcc: true
           anykernel3: true
@@ -36,3 +37,10 @@ jobs:
           nethunter-patch: false
           release: true
           access-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Debug Build Output
+        if: always()
+        run: |
+          echo "=== Checking build artifacts ==="
+          ls -la
+          find . -type f \( -name "*Image*" -o -name "*zImage*" -o -name "*boot.img*" \) 2>/dev/null || echo "No kernel image found"

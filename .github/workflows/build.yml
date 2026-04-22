@@ -33,6 +33,6 @@ jobs:
           aosp-gcc: true
           anykernel3: true
           nethunter: true
-          nethunter-patch: true
+          nethunter-patch: false
           release: true
           access-token: ${{ secrets.GITHUB_TOKEN }}

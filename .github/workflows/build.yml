@@ -67,7 +67,7 @@ jobs:
           nethunter-patch: false
           
           # 6. PERINTAH EKSTRA - KENDALI PENUH
-          extra-make-args: '["zImage", "CROSS_COMPILE=arm-linux-androideabi-", "ARCH=arm", "CFLAGS=-Wno-error", "-j1"]'
+          extra-make-args: ["zImage", "CROSS_COMPILE=arm-linux-androideabi-", "ARCH=arm", "CFLAGS=-Wno-error", "-j1"]
           
           # 7. PENYELESAIAN
           release: true

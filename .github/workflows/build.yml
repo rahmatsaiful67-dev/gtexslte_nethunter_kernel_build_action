@@ -9,23 +9,41 @@ permissions:
 jobs:
   build-kernel:
     name: Build Kernel
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-20.04
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
       - name: Install ARM 32-bit Toolchain
         run: |
+          sudo dpkg --add-architecture i386
           sudo apt-get update
-          sudo apt-get install -y gcc-arm-linux-gnueabihf g++-arm-linux-gnueabihf
-          sudo apt-get install -y gcc-arm-linux-androideabi g++-arm-linux-androideabi
+          
+          # Install standar ARM toolchain yang tersedia di Ubuntu
+          sudo apt-get install -y \
+            gcc-arm-linux-gnueabihf \
+            g++-arm-linux-gnueabihf \
+            gcc-arm-none-eabi \
+            build-essential \
+            libssl-dev \
+            bc \
+            bison \
+            flex \
+            git \
+            wget
+
+      - name: Download Android NDK (Alternative for androideabi)
+        run: |
+          cd /tmp
+          wget https://dl.google.com/android/repository/android-ndk-r21e-linux-x86_64.zip
+          unzip -q android-ndk-r21e-linux-x86_64.zip
+          echo "export NDK_HOME=/tmp/android-ndk-r21e" >> $GITHUB_ENV
 
       - name: Build
         uses: dabao1955/kernel_build_action@main
         env:
           CROSS_COMPILE: arm-linux-gnueabihf-
           ARCH: arm
-          TARGET_KERNEL_CONFIG: gtexslte_defconfig
         with:
           kernel-url: 'https://github.com/jedld/kernel_samsung_gtexslte'
           kernel-branch: 'master'

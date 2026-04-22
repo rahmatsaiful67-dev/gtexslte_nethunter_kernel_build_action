@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - name: Checkout Kernel Source
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup Environment & Dependencies
         run: |
@@ -58,7 +58,7 @@ jobs:
           cd AnyKernel3 && zip -r9 ../Kernel-SM-T285-${{ env.BUILD_TIME }}.zip *
 
       - name: Upload Flashable Kernel Artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: Kernel-SM-T285-Final
           path: Kernel-SM-T285-*.zip          # 5. FITUR KHUSUS
